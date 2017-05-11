@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/reply_item_image"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/user1"
+            android:layout_margin="5dp"
+            />
+
+        <TextView
+            android:id="@+id/reply_item_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="小仙女~"
+            android:layout_gravity="center"
+            android:textSize="15sp"
+            />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/reply_item_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="得得得得发热大晚上"
+        android:layout_marginLeft="50dp"
+        />
+
+</LinearLayout>
