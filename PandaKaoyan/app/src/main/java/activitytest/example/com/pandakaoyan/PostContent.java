@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -24,36 +25,41 @@ import activitytest.example.com.pandakaoyan.panda.shiti.ReplyContent;
 
 public class PostContent extends BasicActivity {
     private List<ReplyContent> replyContentList = new ArrayList<>();//回复集合
-
+    private  String current_user;
+    private  int current_image;
+    private  EditText discuss_content;
+    private  int imageId;
+    private String username;
+    private  String content1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+      super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_content);
-        ImageView imageView = (ImageView) findViewById(R.id.user_image2);
-        TextView user = (TextView) findViewById(R.id.username);
+       // ImageView imageView = (ImageView) findViewById(R.id.user_image2);
+        //TextView user = (TextView) findViewById(R.id.username);
         TextView til = (TextView) findViewById(R.id.post_item_title);
-        TextView content = (TextView) findViewById(R.id.post_item_content);
-        ListView listView = (ListView) findViewById(R.id.discuss_list);
+        //TextView content = (TextView) findViewById(R.id.post_item_content);
+        final ListView listView = (ListView) findViewById(R.id.discuss_list);
         TextView back=(TextView) findViewById(R.id.back);
         TextView pagename=(TextView)findViewById(R.id.page_name);
         TextView discuss=(TextView)findViewById(R.id.discuss);
         pagename.setText("您的位置:帖子详情");
-        final EditText discuss_content=(EditText)findViewById(R.id.discuss_edit);
+          discuss_content=(EditText)findViewById(R.id.discuss_edit);
 //接受从homepage传过来的数据
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        int imageId = bundle.getInt("image");
-        String username = bundle.getString("username");
+        imageId = bundle.getInt("image");
+         username = bundle.getString("username");
         String titl = bundle.getString("title");
-        String content1 = bundle.getString("content");
+         content1 = bundle.getString("content");
 
-        final String current_user=bundle.getString("current_username");
-        final int current_image=bundle.getInt("current_image");//获取当前登录的用户信息
+       current_user=bundle.getString("current_username");
+        current_image=bundle.getInt("current_image");//获取当前登录的用户信息
 
-        imageView.setImageResource(imageId);
-        user.setText(username);
-        til.setText(titl);
-        content.setText(content1);
+        //imageView.setImageResource(imageId);
+       // user.setText(username);
+       //til.setText("标题");
+        //content.setText(content1);
 
 
         initReply();
@@ -72,7 +78,25 @@ public class PostContent extends BasicActivity {
                 String discuss_text=discuss_content.getText().toString();
                 ReplyContent replyContent = new ReplyContent(current_image, current_user, discuss_text);
                 replyContentList.add(replyContent);
-                onCreate(null);
+              //onCreate(null);
+               new Thread(new Runnable() {
+                   @Override
+                   public void run() {
+                       while (!Thread.currentThread().isInterrupted()) {
+                           try {
+                               Thread.sleep(100);
+                           } catch (InterruptedException e) {
+                               Thread.currentThread().interrupt();
+                           }
+                    // 使用postInvalidate可以直接在线程中更新界面
+                           listView.postInvalidate();
+                       }
+                   }
+               }) ;
+
+
+
+
                 Toast.makeText(PostContent.this, "评论成功！", Toast.LENGTH_SHORT).show();
             }
         });
@@ -82,6 +106,8 @@ public class PostContent extends BasicActivity {
     public void initReply() {
 
         for (int i = 0; i < 10; i++) {
+            ReplyContent replyContent3=new ReplyContent(imageId,username,content1);
+            replyContentList.add(replyContent3);
             ReplyContent replyContent = new ReplyContent(R.drawable.user1, "大表哥", "楼主真乃神人也！");
             replyContentList.add(replyContent);
             ReplyContent replyContent1 = new ReplyContent(R.drawable.use7, "小仙女", "楼主真乃神人也！");

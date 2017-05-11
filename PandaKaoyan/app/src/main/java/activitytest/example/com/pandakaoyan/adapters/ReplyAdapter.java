@@ -48,27 +48,30 @@ public class ReplyAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         ReplyContent replyContent = getItem(position);
         View view;
-
+        ImageView image;
+        TextView name;
+        TextView content;
         if (position == 0) {
-            convertView = inflater.inflate(R.layout.post_item, null);
-            return convertView;
+            view = inflater.inflate(R.layout.post_item, null);
+            image = (ImageView) view.findViewById(R.id.user_image2);
+            name = (TextView) view.findViewById(R.id.username);
+            content = (TextView) view.findViewById(R.id.post_item_content);
+
         } else {
 
             view = inflater.inflate(R.layout.reply_item, null);
 
-            ImageView image = (ImageView) view.findViewById(R.id.reply_item_image);
-            TextView name = (TextView) view.findViewById(R.id.reply_item_username);
-            TextView content = (TextView) view.findViewById(R.id.reply_item_content);
-
-
-            image.setImageResource(replyContent.getImage());
-            name.setText(replyContent.getName());
-            content.setText(replyContent.getContent());
-
-            return view;
+            image = (ImageView) view.findViewById(R.id.reply_item_image);
+            name = (TextView) view.findViewById(R.id.reply_item_username);
+            content = (TextView) view.findViewById(R.id.reply_item_content);
         }
+        image.setImageResource(replyContent.getImage());
+        name.setText(replyContent.getName());
+        content.setText(replyContent.getContent());
+        return view;
     }
 
    /* @Override

@@ -17,7 +17,8 @@ import activitytest.example.com.pandakaoyan.panda.shiti.BasicActivity;
 public class HomePageActivity extends BasicActivity {
 
     private List<Post> posts = new ArrayList<>();
-
+    private  String user;
+    private  int imageId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +32,8 @@ public class HomePageActivity extends BasicActivity {
 
         Intent intent2=getIntent();
         Bundle bundle=intent2.getExtras();
-        final int imageId=bundle.getInt("image");
-        final String user=bundle.getString("username");//从login获取的数据
+    imageId=bundle.getInt("image");
+     user=bundle.getString("username");//从login获取的数据
 
 
         initPosts();

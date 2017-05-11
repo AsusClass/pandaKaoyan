@@ -27,10 +27,11 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         db = dbHelper.getWritableDatabase();
         username = (EditText) findViewById(R.id.Edit_username);
         password = (EditText) findViewById(R.id.Edit_password);
+        userImage=(ImageView)findViewById(R.id.login_image);
         findViewById(R.id.button_login).setOnClickListener(this);
         findViewById(R.id.TextView_login).setOnClickListener(this);
         findViewById(R.id.TextView_register).setOnClickListener(this);
-        findViewById(R.id.login_image);
+
     }
 
     @Override
@@ -77,7 +78,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                         bundle.putString("username", u);
                         bundle.putInt("image",image );
                         Intent intent2 = new Intent(LoginActivity.this, HomePageActivity.class);
-                        intent2.putExtra("bundle",bundle);
+                        intent2.putExtras(bundle);
                         startActivity(intent2);
                         Toast.makeText(LoginActivity.this, "登录成功！", Toast.LENGTH_SHORT).show();
                         break;
