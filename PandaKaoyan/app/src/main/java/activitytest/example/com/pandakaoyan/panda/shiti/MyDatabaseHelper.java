@@ -1,4 +1,4 @@
-package activitytest.example.com.pandakaoyan;
+package activitytest.example.com.pandakaoyan.panda.shiti;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

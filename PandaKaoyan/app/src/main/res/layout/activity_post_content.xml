@@ -37,7 +37,7 @@
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/discuss"
+            android:id="@+id/click_discuss"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

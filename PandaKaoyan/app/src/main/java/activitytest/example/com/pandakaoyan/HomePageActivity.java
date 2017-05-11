@@ -1,6 +1,5 @@
 package activitytest.example.com.pandakaoyan;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,44 +12,53 @@ import java.util.List;
 
 import activitytest.example.com.pandakaoyan.adapters.PostAdapter;
 import activitytest.example.com.pandakaoyan.panda.shiti.BasicActivity;
-
+import activitytest.example.com.pandakaoyan.panda.shiti.Post;
+/*
+首页界面 登录后推荐帖子
+ */
 public class HomePageActivity extends BasicActivity {
 
     private List<Post> posts = new ArrayList<>();
-    private  String user;
-    private  int imageId;
+    private String user;
+    private int imageId;
+    private ListView listView;
+    private TextView back, pagename;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_page);
 
-        ListView listView=(ListView)findViewById(R.id.first_page_listView);
-        TextView pagename=(TextView)findViewById(R.id.page_name);
-        final TextView back=(TextView)findViewById(R.id.back);
+
+        listView = (ListView) findViewById(R.id.first_page_listView);
+        pagename = (TextView) findViewById(R.id.page_name);
+        back = (TextView) findViewById(R.id.back);
         pagename.setText("您的位置:首页");
 
 
-        Intent intent2=getIntent();
-        Bundle bundle=intent2.getExtras();
-    imageId=bundle.getInt("image");
-     user=bundle.getString("username");//从login获取的数据
+        Intent intent2 = getIntent();
+        Bundle bundle = intent2.getExtras();
+        imageId = bundle.getInt("image");
+        user = bundle.getString("username");//从login获取的数据
 
 
-        initPosts();
-        PostAdapter adapter=new PostAdapter(HomePageActivity.this,R.layout.home_list_item,posts);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        initPosts();//初始化listview
+        PostAdapter adapter = new PostAdapter(HomePageActivity.this, R.layout.home_list_item, posts);
+        listView.setAdapter(adapter);//启动适配器
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Post post=posts.get(position);
-                Bundle bundle=new Bundle();
-                bundle.putInt("image",post.getImageId());
-                bundle.putString("username",post.getUsername());
-                bundle.putString("title",post.getTittle());
-                bundle.putString("content",post.getContent());
-                bundle.putString("current_username",user);//传递当前登录用户的信息
-                bundle.putInt("current_image",imageId);
-                Intent intent=new Intent(HomePageActivity.this,PostContent.class);
+                Post post = posts.get(position);
+                Bundle bundle = new Bundle();
+                bundle.putInt("image", post.getImageId());
+                bundle.putString("username", post.getUsername());
+                bundle.putString("title", post.getTittle());
+                bundle.putString("content", post.getContent());//以上传递楼主的信息
+
+                bundle.putString("current_username", user);//传递当前登录用户的信息
+                bundle.putInt("current_image", imageId);
+                Intent intent = new Intent(HomePageActivity.this, PostContentActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -58,13 +66,13 @@ public class HomePageActivity extends BasicActivity {
 
 
 
-        back.setOnClickListener(new View.OnClickListener(){
+        //返回功能
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 HomePageActivity.this.finish();
             }
         });
-
 
 
     }

@@ -5,6 +5,9 @@ import android.os.Bundle;
 
 import activitytest.example.com.pandakaoyan.panda.shiti.BasicActivity;
 
+/*
+关于用户的个人介绍
+ */
 public class AboutmeActivityActivity extends BasicActivity {
 
     @Override

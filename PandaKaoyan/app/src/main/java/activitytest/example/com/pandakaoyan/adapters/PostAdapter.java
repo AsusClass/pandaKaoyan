@@ -1,7 +1,6 @@
 package activitytest.example.com.pandakaoyan.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +10,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import activitytest.example.com.pandakaoyan.Post;
 import activitytest.example.com.pandakaoyan.R;
+import activitytest.example.com.pandakaoyan.panda.shiti.Post;
 
 /**
  * Created by class on 2017/5/7.

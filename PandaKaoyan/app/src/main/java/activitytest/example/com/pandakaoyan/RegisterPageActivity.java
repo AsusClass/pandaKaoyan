@@ -6,29 +6,26 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import activitytest.example.com.pandakaoyan.panda.shiti.BasicActivity;
+import activitytest.example.com.pandakaoyan.panda.shiti.MyDatabaseHelper;
 
+/*
+注册界面
+ */
 public class RegisterPageActivity extends BasicActivity implements View.OnClickListener {
     private SQLiteDatabase db;
     private EditText user;
@@ -43,10 +40,12 @@ private String TAG="RegisterPageActivity";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_page);
-
+        user = (EditText) findViewById(R.id.edit_username);
+        password = (EditText) findViewById(R.id.edit_password);
         picture = (ImageView) findViewById(R.id.user_image);
-        findViewById(R.id.take_photo).setOnClickListener(this);//拍照设置设置监听器
 
+
+        findViewById(R.id.take_photo).setOnClickListener(this);//拍照设置设置监听器
         findViewById(R.id.button_submitRegister).setOnClickListener(this);//注册确认设置监听器
 
 
@@ -60,8 +59,8 @@ private String TAG="RegisterPageActivity";
         switch (v.getId()) {
             case R.id.take_photo://拍张照片
                 //创建File对象，用于存储拍照后的图片
-                String imagename = System.currentTimeMillis() + "";
-                File outputImage = new File(getExternalCacheDir(), imagename);
+
+                File outputImage = new File(getExternalCacheDir(), "output_image.jpg");
                 try {
                     if (outputImage.exists()) {
                         outputImage.delete();
@@ -88,12 +87,10 @@ private String TAG="RegisterPageActivity";
 
 
 
-                user = (EditText) findViewById(R.id.edit_username);
-                password = (EditText) findViewById(R.id.edit_password);
-                u = user.getText().toString();
+
+                u = user.getText().toString();//获取注册时用户输入的内容
                 p = password.getText().toString();
                 int userImage=picture.getId();
-
                 boolean isok = true;//注册信息合法标记
                 if (u.equals("") || u.equals("!") || ",".equals(u) || ".".equals(u)
                         || p.equals("")||userImage==0) {
@@ -116,10 +113,6 @@ private String TAG="RegisterPageActivity";
                     }
                     cursor.close();
                     if (!isUsernameExit) {   //如果用户名可用保存新用户信息
-                        // db.execSQL("insert into user(username,user_image,password) values(?,?,?)", new String[]{u, userImage, p});
-
-                        dbHelper = new MyDatabaseHelper(this, "PandaKaoyan.db", null, 1);
-                        db = dbHelper.getWritableDatabase();
                         ContentValues values = new ContentValues();//装数据
                         values.put("username", u);
                         values.put("user_image", userImage);

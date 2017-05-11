@@ -1,9 +1,13 @@
 package activitytest.example.com.pandakaoyan;
+/*
+登录界面  主活动
+ */
+
+
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -11,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import activitytest.example.com.pandakaoyan.panda.shiti.BasicActivity;
+import activitytest.example.com.pandakaoyan.panda.shiti.MyDatabaseHelper;
 
 public class LoginActivity extends BasicActivity implements View.OnClickListener {
     private MyDatabaseHelper dbHelper;
@@ -23,8 +28,13 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+
         dbHelper = new MyDatabaseHelper(this, "PandaKaoyan.db", null, 1);
-        db = dbHelper.getWritableDatabase();
+        db = dbHelper.getWritableDatabase();//获取SQL操作对象
+
+
+
         username = (EditText) findViewById(R.id.Edit_username);
         password = (EditText) findViewById(R.id.Edit_password);
         userImage=(ImageView)findViewById(R.id.login_image);
@@ -76,7 +86,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
 
                         Bundle bundle = new Bundle();
                         bundle.putString("username", u);
-                        bundle.putInt("image",image );
+                        bundle.putInt("image",image );//携带用户信息
                         Intent intent2 = new Intent(LoginActivity.this, HomePageActivity.class);
                         intent2.putExtras(bundle);
                         startActivity(intent2);

@@ -1,4 +1,4 @@
-package activitytest.example.com.pandakaoyan;
+package activitytest.example.com.pandakaoyan.panda.shiti;
 
 /**
  * Created by class on 2017/5/7.
