@@ -4,7 +4,6 @@ package activitytest.example.com.pandakaoyan;
  */
 
 
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -34,10 +33,9 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         db = dbHelper.getWritableDatabase();//获取SQL操作对象
 
 
-
         username = (EditText) findViewById(R.id.Edit_username);
         password = (EditText) findViewById(R.id.Edit_password);
-        userImage=(ImageView)findViewById(R.id.login_image);
+        userImage = (ImageView) findViewById(R.id.login_image);
         findViewById(R.id.button_login).setOnClickListener(this);
         findViewById(R.id.TextView_login).setOnClickListener(this);
         findViewById(R.id.TextView_register).setOnClickListener(this);
@@ -62,7 +60,7 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
 
 
     public void login() {
-        int image=userImage.getId();
+        int image = userImage.getId();
         String u = username.getText().toString();
         String p = password.getText().toString();
 
@@ -83,10 +81,9 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                     if (name.equals(u) && paw.equals(p)) {
                         temp = true;
 
-
                         Bundle bundle = new Bundle();
                         bundle.putString("username", u);
-                        bundle.putInt("image",image );//携带用户信息
+                        bundle.putInt("image", image);//携带用户信息
                         Intent intent2 = new Intent(LoginActivity.this, HomePageActivity.class);
                         intent2.putExtras(bundle);
                         startActivity(intent2);

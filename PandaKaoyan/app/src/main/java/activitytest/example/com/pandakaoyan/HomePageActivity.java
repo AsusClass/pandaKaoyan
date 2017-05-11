@@ -13,6 +13,7 @@ import java.util.List;
 import activitytest.example.com.pandakaoyan.adapters.PostAdapter;
 import activitytest.example.com.pandakaoyan.panda.shiti.BasicActivity;
 import activitytest.example.com.pandakaoyan.panda.shiti.Post;
+
 /*
 首页界面 登录后推荐帖子
  */
@@ -63,7 +64,6 @@ public class HomePageActivity extends BasicActivity {
                 startActivity(intent);
             }
         });
-
 
 
         //返回功能

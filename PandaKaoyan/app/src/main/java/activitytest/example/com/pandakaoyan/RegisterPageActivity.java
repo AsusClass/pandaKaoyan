@@ -35,7 +35,8 @@ public class RegisterPageActivity extends BasicActivity implements View.OnClickL
     public static final int TAKE_PHOTO = 1;
     private MyDatabaseHelper dbHelper;
     private String u, p;
-private String TAG="RegisterPageActivity";
+    private String TAG = "RegisterPageActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,16 +85,12 @@ private String TAG="RegisterPageActivity";
                 //注册
 
 
-
-
-
-
                 u = user.getText().toString();//获取注册时用户输入的内容
                 p = password.getText().toString();
-                int userImage=picture.getId();
+                int userImage = picture.getId();
                 boolean isok = true;//注册信息合法标记
                 if (u.equals("") || u.equals("!") || ",".equals(u) || ".".equals(u)
-                        || p.equals("")||userImage==0) {
+                        || p.equals("") || userImage == 0) {
                     isok = false;
                     Toast.makeText(RegisterPageActivity.this, "用户所填信息不合法！", Toast.LENGTH_SHORT).show();
                 }

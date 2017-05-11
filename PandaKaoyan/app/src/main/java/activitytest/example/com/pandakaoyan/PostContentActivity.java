@@ -2,6 +2,7 @@ package activitytest.example.com.pandakaoyan;
 /*
 帖子详情界面
  */
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,11 +25,11 @@ public class PostContentActivity extends BasicActivity {
     private int current_image;
     private String current_user;
     private int imageId;
-    private String username,titl,content1;
+    private String username, titl, content1;
 
 
     private ListView listView;
-    private TextView back,pagename, discuss, til;
+    private TextView back, pagename, discuss, til;
     private EditText discuss_content;
 
     @Override
@@ -51,9 +52,8 @@ public class PostContentActivity extends BasicActivity {
         Bundle bundle = intent.getExtras();
         imageId = bundle.getInt("image");
         username = bundle.getString("username");
-         titl = bundle.getString("title");
+        titl = bundle.getString("title");
         content1 = bundle.getString("content");//以上是帖子楼主的信息
-
 
 
         current_user = bundle.getString("current_username");
