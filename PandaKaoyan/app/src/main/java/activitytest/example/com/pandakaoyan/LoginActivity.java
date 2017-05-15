@@ -4,17 +4,30 @@ package activitytest.example.com.pandakaoyan;
  */
 
 
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.TimerTask;
+
+import activitytest.example.com.pandakaoyan.iterface.HttpCallbackListener;
 import activitytest.example.com.pandakaoyan.panda.shiti.BasicActivity;
+import activitytest.example.com.pandakaoyan.panda.shiti.HttpURLUti;
 import activitytest.example.com.pandakaoyan.panda.shiti.MyDatabaseHelper;
 
 public class LoginActivity extends BasicActivity implements View.OnClickListener {
@@ -30,14 +43,13 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         setContentView(R.layout.login);
 
 
-        dbHelper = new MyDatabaseHelper(this, "PandaKaoyan.db", null, 1);
-        db = dbHelper.getWritableDatabase();//获取SQL操作对象
-
+        //  dbHelper = new MyDatabaseHelper(this, "PandaKaoyan.db", null, 1);
+        // db = dbHelper.getWritableDatabase();//获取SQL操作对象
 
 
         username = (EditText) findViewById(R.id.Edit_username);
         password = (EditText) findViewById(R.id.Edit_password);
-        userImage=(ImageView)findViewById(R.id.login_image);
+        userImage = (ImageView) findViewById(R.id.login_image);
         findViewById(R.id.button_login).setOnClickListener(this);
         findViewById(R.id.TextView_login).setOnClickListener(this);
         findViewById(R.id.TextView_register).setOnClickListener(this);
@@ -49,7 +61,21 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         switch (v.getId()) {
             case R.id.TextView_login:
             case R.id.button_login:  //登录跳转到主页
-                login();
+                // login();
+                String u = username.getText().toString();
+                String p = password.getText().toString();
+                if (u.equals("") || p.equals("")) {
+                    Toast.makeText(LoginActivity.this, "用户名或密码不能为空！", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (u.equals("13102405") && p.equals("123")) {
+                        Intent intent2 = new Intent(LoginActivity.this, HomePageActivity.class);
+                        startActivity(intent2);
+                        Toast.makeText(LoginActivity.this, "登录成功！", Toast.LENGTH_SHORT).show();
+
+                    }else {
+                        Toast.makeText(LoginActivity.this,"用户名或密码错误！",Toast.LENGTH_SHORT).show();
+                    }
+                }
                 break;
             case R.id.TextView_register://跳转到注册页面
                 Intent intent = new Intent(LoginActivity.this, RegisterPageActivity.class);
@@ -60,52 +86,62 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         }
     }
 
+    /*
+    //登录逻辑 与服务器通讯
+        public void login() {
 
-    public void login() {
-        int image=userImage.getId();
-        String u = username.getText().toString();
-        String p = password.getText().toString();
-
-        Cursor cursor = db.query("user", null, null, null, null, null, null);//查询user表中所有数据
-        boolean isok = true;//信息合法标记
-        if (u.equals("") || p.equals("")) {
-            isok = false;//不合法
-            Toast.makeText(LoginActivity.this, "用户名或密码不能为空！", Toast.LENGTH_SHORT).show();
-        }
-        if (isok) {
-            boolean temp = false;//登录成功标记
-            if (cursor.moveToFirst()) {
-
-                do {
-                    //遍历cursor对象
-                    String name = cursor.getString(cursor.getColumnIndex("username"));
-                    String paw = cursor.getString(cursor.getColumnIndex("password"));
-                    if (name.equals(u) && paw.equals(p)) {
-                        temp = true;
-
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("username", u);
-                        bundle.putInt("image",image );//携带用户信息
-                        Intent intent2 = new Intent(LoginActivity.this, HomePageActivity.class);
-                        intent2.putExtras(bundle);
-                        startActivity(intent2);
-                        Toast.makeText(LoginActivity.this, "登录成功！", Toast.LENGTH_SHORT).show();
-                        break;
+            String u = username.getText().toString();
+            String p = password.getText().toString();
+            boolean isok = true;//信息合法标记
+            if (u.equals("") || p.equals("")) {
+                isok = false;//不合法
+                Toast.makeText(LoginActivity.this, "用户名或密码不能为空！", Toast.LENGTH_SHORT).show();
+            }
+            if (isok) {
+                String address = "http://192.168.23.1:8080/pdky/LoginServlet?username=admin&password=123456";
+                Log.d("LoginActivity","---------"+address);
+                HttpURLUti.sendHttpRequest(address, new HttpCallbackListener() {
+                    @Override
+                    public void onFinish(String response) {
+                        try {
+                            Log.d("LoginActivity","---------"+response);
+                            JSONObject jsonObject = new JSONObject(response.toString());
+                            String temp = jsonObject.getString("json");
+                            if (temp.equals("true")) {
+                                doLogin();
+                            } else {
+                                Toast.makeText(LoginActivity.this, "用户名或密码错误！", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-                while (cursor.moveToNext());
+
+                    @Override
+                    public void onError(Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+
 
             }
-            if (!temp) {
-                Toast.makeText(LoginActivity.this, "用户名或密码错误！", Toast.LENGTH_SHORT).show();
-            }
-            cursor.close();
         }
+
+    */
+    //登录成功跳转
+    private void doLogin() {
+        runOnUiThread(new TimerTask() {
+            @Override
+            public void run() {
+
+                Intent intent2 = new Intent(LoginActivity.this, HomePageActivity.class);
+                startActivity(intent2);
+                Toast.makeText(LoginActivity.this, "登录成功！", Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
-
 }
-
 
 

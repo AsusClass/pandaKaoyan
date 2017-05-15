@@ -53,13 +53,14 @@ public class ReplyAdapter extends BaseAdapter {
         View view;
         ImageView image;
         TextView name;
-        TextView content;
+        TextView content,title;
         if (position == 0) {
             view = inflater.inflate(R.layout.post_item, null);
             image = (ImageView) view.findViewById(R.id.user_image2);
             name = (TextView) view.findViewById(R.id.username);
             content = (TextView) view.findViewById(R.id.post_item_content);
-
+            title=(TextView)view.findViewById(R.id.post_item_content);
+            title.setText(replyContent.getTitle());
         } else {
 
             view = inflater.inflate(R.layout.reply_item, null);

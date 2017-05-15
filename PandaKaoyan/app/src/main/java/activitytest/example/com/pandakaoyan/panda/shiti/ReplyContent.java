@@ -8,10 +8,22 @@ public class ReplyContent {
     String name;
     String content;
     int image;
+    String title;
     public ReplyContent(int image,String name,String content) {
         this.content = content;
         this.name = name;
         this.image=image;
+    }
+
+    public ReplyContent(int image, String name, String title, String content) {
+        this.content = content;
+        this.image = image;
+        this.name = name;
+        this.title = title;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setContent(String content) {

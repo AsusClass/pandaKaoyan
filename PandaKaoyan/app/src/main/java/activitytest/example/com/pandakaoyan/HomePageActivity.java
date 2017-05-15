@@ -36,11 +36,6 @@ public class HomePageActivity extends BasicActivity {
         pagename.setText("您的位置:首页");
 
 
-        Intent intent2 = getIntent();
-        Bundle bundle = intent2.getExtras();
-        imageId = bundle.getInt("image");
-        user = bundle.getString("username");//从login获取的数据
-
 
         initPosts();//初始化listview
         PostAdapter adapter = new PostAdapter(HomePageActivity.this, R.layout.home_list_item, posts);
@@ -56,13 +51,13 @@ public class HomePageActivity extends BasicActivity {
                 bundle.putString("title", post.getTittle());
                 bundle.putString("content", post.getContent());//以上传递楼主的信息
 
-                bundle.putString("current_username", user);//传递当前登录用户的信息
-                bundle.putInt("current_image", imageId);
                 Intent intent = new Intent(HomePageActivity.this, PostContentActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
+
+
 
 
 
@@ -78,6 +73,9 @@ public class HomePageActivity extends BasicActivity {
     }
 
 
+
+
+    //初始化数据（模拟数据）
     private void initPosts() {
 
         for (int i = 0; i < 3; i++) {
