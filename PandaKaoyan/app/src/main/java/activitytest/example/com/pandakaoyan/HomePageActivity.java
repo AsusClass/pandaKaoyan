@@ -78,7 +78,7 @@ public class HomePageActivity extends BasicActivity {
     //初始化数据（模拟数据）
     private void initPosts() {
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 10; i++) {
             Post post = new Post("相对布局 android:layout_above  为将该控件的底部放在指定id控件的上方" +
                     "android:layout_below   同理类似，将该控件的顶部放在指定id控件的下方", R.drawable.user1, "20分钟前",
                     "你知道小仙女是什么吗？", "我全家都是仙女！");

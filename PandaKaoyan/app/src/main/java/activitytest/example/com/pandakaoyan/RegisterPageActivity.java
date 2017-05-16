@@ -11,16 +11,21 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import activitytest.example.com.pandakaoyan.iterface.HttpCallbackListener;
 import activitytest.example.com.pandakaoyan.panda.shiti.BasicActivity;
+import activitytest.example.com.pandakaoyan.panda.shiti.HttpURLUti;
 import activitytest.example.com.pandakaoyan.panda.shiti.MyDatabaseHelper;
 
 /*
@@ -35,7 +40,8 @@ public class RegisterPageActivity extends BasicActivity implements View.OnClickL
     public static final int TAKE_PHOTO = 1;
     private MyDatabaseHelper dbHelper;
     private String u, p;
-private String TAG="RegisterPageActivity";
+    private String TAG = "RegisterPageActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,57 +88,61 @@ private String TAG="RegisterPageActivity";
                 break;
             case R.id.button_submitRegister:
                 //注册
-
-
-
-
-
-
                 u = user.getText().toString();//获取注册时用户输入的内容
                 p = password.getText().toString();
-                int userImage=picture.getId();
+                int userImage = picture.getId();
                 boolean isok = true;//注册信息合法标记
                 if (u.equals("") || u.equals("!") || ",".equals(u) || ".".equals(u)
-                        || p.equals("")||userImage==0) {
+                        || p.equals("") || userImage == 0) {
                     isok = false;
                     Toast.makeText(RegisterPageActivity.this, "用户所填信息不合法！", Toast.LENGTH_SHORT).show();
                 }
                 if (isok) {
-                    Cursor cursor = db.query("user", null, null, null, null, null, null);//查询user表中所有数据
-                    boolean isUsernameExit = false;
-                    if (cursor.moveToFirst()) {
-                        do {
-                            //遍历cursor对象
-                            String name = cursor.getString(cursor.getColumnIndex("username"));
-                            if (name.equals(user.getText().toString())) {
-                                isUsernameExit = true;
-                                Toast.makeText(RegisterPageActivity.this, "用户名已存在请重新输入！", Toast.LENGTH_SHORT).show();
-                                break;
+                    String address = "http://192.168.23.1:8080/pdky/RegisterServlet?username=" + u + "&password=" + p;
+                    Log.d("LoginActivity", "---------" + address);
+                    HttpURLUti.sendHttpRequest(address, new HttpCallbackListener() {
+                        @Override
+                        public void onFinish(String response) {
+                            try {
+                                Log.d("LoginActivity", "---------" + response);
+                                JSONObject jsonObject = new JSONObject(response.toString());
+                                String temp = jsonObject.getString("json");
+                                if (temp.equals("true")) {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(RegisterPageActivity.this, "注册成功！！！", Toast.LENGTH_SHORT).show();
+                                            Intent intent1 = new Intent(RegisterPageActivity.this, LoginActivity.class);
+                                            startActivity(intent1);
+                                        }
+                                    });
+
+
+
+                                } else {
+                                    Toast.makeText(RegisterPageActivity.this, "用户名已存在！", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        } while (cursor.moveToNext());
-                    }
-                    cursor.close();
-                    if (!isUsernameExit) {   //如果用户名可用保存新用户信息
-                        ContentValues values = new ContentValues();//装数据
-                        values.put("username", u);
-                        values.put("user_image", userImage);
-                        values.put("password", p);
-                        db.insert("user", null, values);//插入数据到表中
-                        values.clear();
-                        //并跳转到登录界面
-                        intent = new Intent(RegisterPageActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        Toast.makeText(RegisterPageActivity.this, "注册成功!请登录！", Toast.LENGTH_SHORT).show();
+                        }
 
-                    }
+                        @Override
+                        public void onError(Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    break;
+
+
                 }
-
-                break;
             default:
                 break;
-
         }
+
+
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -153,6 +163,4 @@ private String TAG="RegisterPageActivity";
                 break;
         }
     }
-
-
 }

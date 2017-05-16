@@ -67,16 +67,8 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
                 if (u.equals("") || p.equals("")) {
                     Toast.makeText(LoginActivity.this, "用户名或密码不能为空！", Toast.LENGTH_SHORT).show();
                 } else {
-                    if (u.equals("13102405") && p.equals("123")) {
-                        Intent intent2 = new Intent(LoginActivity.this, HomePageActivity.class);
-                        startActivity(intent2);
-                        Toast.makeText(LoginActivity.this, "登录成功！", Toast.LENGTH_SHORT).show();
-
-                    }else {
-                        Toast.makeText(LoginActivity.this,"用户名或密码错误！",Toast.LENGTH_SHORT).show();
-                    }
-                }
-                break;
+                    login();
+                }                break;
             case R.id.TextView_register://跳转到注册页面
                 Intent intent = new Intent(LoginActivity.this, RegisterPageActivity.class);
                 startActivity(intent);
@@ -86,48 +78,48 @@ public class LoginActivity extends BasicActivity implements View.OnClickListener
         }
     }
 
-    /*
+
     //登录逻辑 与服务器通讯
-        public void login() {
+    public void login() {
 
-            String u = username.getText().toString();
-            String p = password.getText().toString();
-            boolean isok = true;//信息合法标记
-            if (u.equals("") || p.equals("")) {
-                isok = false;//不合法
-                Toast.makeText(LoginActivity.this, "用户名或密码不能为空！", Toast.LENGTH_SHORT).show();
-            }
-            if (isok) {
-                String address = "http://192.168.23.1:8080/pdky/LoginServlet?username=admin&password=123456";
-                Log.d("LoginActivity","---------"+address);
-                HttpURLUti.sendHttpRequest(address, new HttpCallbackListener() {
-                    @Override
-                    public void onFinish(String response) {
-                        try {
-                            Log.d("LoginActivity","---------"+response);
-                            JSONObject jsonObject = new JSONObject(response.toString());
-                            String temp = jsonObject.getString("json");
-                            if (temp.equals("true")) {
-                                doLogin();
-                            } else {
-                                Toast.makeText(LoginActivity.this, "用户名或密码错误！", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+        String u = username.getText().toString();
+        String p = password.getText().toString();
+        boolean isok = true;//信息合法标记
+        if (u.equals("") || p.equals("")) {
+            isok = false;//不合法
+            Toast.makeText(LoginActivity.this, "用户名或密码不能为空！", Toast.LENGTH_SHORT).show();
+        }
+        if (isok) {
+            String address = "http://192.168.23.1:8080/pdky/LoginServlet?username="+u+"&password="+p;
+            Log.d("LoginActivity", "---------" + address);
+            HttpURLUti.sendHttpRequest(address, new HttpCallbackListener() {
+                @Override
+                public void onFinish(String response) {
+                    try {
+                        Log.d("LoginActivity", "---------" + response);
+                        JSONObject jsonObject = new JSONObject(response.toString());
+                        String temp = jsonObject.getString("json");
+                        if (temp.equals("true")) {
+                            doLogin();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "用户名或密码错误！", Toast.LENGTH_SHORT).show();
                         }
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-                });
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    e.printStackTrace();
+                }
+            });
 
 
-            }
         }
+    }
 
-    */
+
     //登录成功跳转
     private void doLogin() {
         runOnUiThread(new TimerTask() {
