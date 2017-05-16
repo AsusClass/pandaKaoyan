@@ -10,6 +10,8 @@ import activitytest.example.com.pandakaoyan.panda.shiti.BasicActivity;
  */
 public class AboutmeActivityActivity extends BasicActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
